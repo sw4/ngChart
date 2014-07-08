@@ -10,6 +10,7 @@ html,body{
     position:relative;
     font-family:arial;
     font-size:12px;
+    overflow:hidden;
 }
 .ngChart svg{
     position:absolute;

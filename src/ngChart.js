@@ -20,15 +20,16 @@ ngChart.directive("ngChart", [function () {
         restrict: "E",
         replace: true,
         transclude: false,
-        template:"<div class='ngChart'><svg ng-chart={{type}} ng-controller='ngChart'></svg></div>",
+        template:"<div class='ngChart'><svg ng-controller='ngChart' ng-chart={{type}}></svg></div>",
         scope:{
             x:'@',
             y:'@',
             data:'@',
-            margin:'@'
+            margin:'@',
+            type:'@'
         }, 
-        link:function(scope, element, attrs){  
-            scope.type=attrs.type || scope.type ||  'bar';
+        link:function(scope, element, attrs){          
+            scope.type=attrs.type || scope.type ||  'column';
             scope.x=scope.x || attrs.x;
             scope.y=scope.y || attrs.y;            
             scope.margin=scope.margin || attrs.margin;   
@@ -36,30 +37,37 @@ ngChart.directive("ngChart", [function () {
     }
 }]);
 
-ngChart.directive("ngChart", [function () {
+ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( $compile, $http, $templateCache) {
+
+    function template(type){
+        switch(type){
+            case "column":
+                return "<svg height='{{svgHeight+margin.top+margin.bottom}}' width='{{svgWidth+margin.left+margin.right}}'>\
+                    <rect ng-repeat='item in data' ng-x='{{item.svgX}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'></rect>\
+                    </g>\
+                    <g>\
+                        <g class='axis yAxis' transform='translate({{margin.left}},{{margin.top}})'>\
+                            <line ng-y2='{{svgHeight}}'></line>\
+                            <g transform='translate(-5,{{$index*tickOffset}})'  ng-repeat='tick in ticksY'>\
+                                <line ng-x2='5'></line>\
+                                <text ng-y='5'>{{tick.value}}</text>\
+                            </g>\
+                        </g>\
+                        <g class='axis xAxis' transform='translate({{margin.left}},{{svgHeight+margin.bottom}})'>\
+                            <line ng-x2='{{svgWidth}}'></line>\
+                            <g transform='translate({{item.svgX-margin.left+(item.svgWidth/2)}},0)' ng-repeat='item in data'>\
+                                <line ng-y2='5'></line>\
+                                <text ng-y='20'>{{item[x]}}</text>\
+                            </g>\
+                        </g>\
+                    </svg>"
+            break;
+        }
+    };
     return {
         restrict: "A",
-        replace: false,
+        replace: true,
         transclude: false,
-        template:"<g>\
-        <rect ng-repeat='item in data' ng-x='{{item.svgX}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'></rect>\
-        </g>\
-        <g>\
-            <g class='axis yAxis' transform='translate({{margin.left}},{{margin.top}})'>\
-                <line ng-y2='{{svgHeight}}'></line>\
-                <g transform='translate(-5,{{$index*tickOffset}})'  ng-repeat='tick in ticksY'>\
-                    <line ng-x2='5'></line>\
-                    <text ng-y='5'>{{tick.value}}</text>\
-                </g>\
-            </g>\
-            <g class='axis xAxis' transform='translate({{margin.left}},{{svgHeight+margin.bottom}})'>\
-                <line ng-x2='{{svgWidth}}'></line>\
-                <g transform='translate({{item.svgX-margin.left+(item.svgWidth/2)}},0)' ng-repeat='item in data'>\
-                    <line ng-y2='5'></line>\
-                    <text ng-y='20'>{{item[x]}}</text>\
-                </g>\
-            </g>\
-        </g>",
         controller: function($scope, $element){
             $scope.data=$scope.$parent.$parent.data;
             $scope.x=$scope.$parent.x;
@@ -70,14 +78,18 @@ ngChart.directive("ngChart", [function () {
                 right:margin,
                 bottom:margin,
                 left:margin
-            };
-            var svgHeight=$element[0].offsetHeight-$scope.margin.top-$scope.margin.bottom,
-                svgWidth=$element[0].offsetWidth-$scope.margin.left-$scope.margin.right,
+            };            
+            var svgHeight=$element[0].offsetHeight|| $element[0].clientHeight || $element[0].parentNode.clientHeight,
+                svgWidth=$element[0].offsetWidth||$element[0].clientWidth || $element[0].parentNode.clientWidth,
                 x=[],
                 y=[], 
                 maxWidth=0, 
                 maxHeight=0,
                 maxX, minX, maxY, minY;
+
+            svgHeight=svgHeight-$scope.margin.top-$scope.margin.bottom,
+            svgWidth=svgWidth-$scope.margin.left-$scope.margin.right,
+
 
             $scope.svgHeight=svgHeight;
             $scope.svgWidth=svgWidth;
@@ -107,6 +119,8 @@ ngChart.directive("ngChart", [function () {
             }            
         },        
         link:function(scope, element, attrs){  
+            element.html(template(scope.type));        
+            element.replaceWith($compile(element.html())(scope)); 
         }
     }
 }]);
