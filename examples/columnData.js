@@ -5,7 +5,9 @@ function ($scope,$interval) {
     {category:8,y:2},
     {category:1,y:9},
     {category:4,y:5},
-    {category:6,y:2}
+    {category:6,y:2},
+    {category:7,y:6},
+    {category:1,y:2}
     ];
     
     $interval(function() {

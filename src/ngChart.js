@@ -43,22 +43,22 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
     function template(type){
         switch(type){
             case "column":
-                return "<svg height='{{svgHeight+margin.top+margin.bottom}}' width='{{svgWidth+margin.left+margin.right}}'>\
+                return "<svg ng-height='{{svgHeight+margin.top+margin.bottom}}' ng-width='{{svgWidth+margin.left+margin.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g>\
                     <rect ng-repeat='item in data' ng-x='{{item.svgX}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'></rect>\
                     </g>\
                     <g>\
-                        <g class='axis yAxis' transform='translate({{margin.left}},{{margin.top}})'>\
+                        <g class='axis yAxis' ng-transform='translate({{margin.left}},{{margin.top}})'>\
                             <line ng-y2='{{svgHeight}}'></line>\
-                            <g transform='translate(-5,{{$index*tickOffset}})'  ng-repeat='tick in ticksY'>\
+                            <g ng-transform='translate(-5,{{$index*tickOffset}})'  ng-repeat='tick in ticksY'>\
                                 <line ng-x2='5'></line>\
                                 <text ng-y='5'>{{tick.value}}</text>\
                             </g>\
                         </g>\
-                        <g class='axis xAxis' transform='translate({{margin.left}},{{svgHeight+margin.bottom}})'>\
+                        <g class='axis xAxis' ng-transform='translate({{margin.left}},{{svgHeight+margin.bottom}})'>\
                             <line ng-x2='{{svgWidth}}'></line>\
-                            <g transform='translate({{item.svgX-margin.left+(item.svgWidth/2)}},0)' ng-repeat='item in data'>\
+                            <g ng-transform='translate({{item.svgX-margin.left+(item.svgWidth/2)}},0)' ng-repeat='item in data'>\
                                 <line ng-y2='5'></line>\
                                 <text ng-y='20'>{{item[x]}}</text>\
                             </g>\
