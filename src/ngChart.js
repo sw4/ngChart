@@ -71,14 +71,26 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
         controller: function($scope, $element){
             $scope.data=$scope.$parent.$parent.data;
             $scope.x=$scope.$parent.x;
-            $scope.y=$scope.$parent.y;
-            var margin=parseInt($scope.$parent.margin);
-            $scope.margin={
-                top:margin,
-                right:margin,
-                bottom:margin,
-                left:margin
-            };            
+            $scope.y=$scope.$parent.y;            
+            var margin=$scope.$parent.margin;
+            if(margin.split(',').length > 1){
+                margin=margin.split(',');
+                $scope.margin={
+                    top:parseInt(margin[0]),
+                    right:parseInt(margin[1]),
+                    bottom:parseInt(margin[2]),
+                    left:parseInt(margin[3])
+                }; 
+            }else{
+                margin=parseInt(margin);
+                console.log(margin);
+                $scope.margin={
+                    top:margin,
+                    right:margin,
+                    bottom:margin,
+                    left:margin
+                };   
+            }             
             var svgHeight=$element[0].offsetHeight|| $element[0].clientHeight || $element[0].parentNode.clientHeight,
                 svgWidth=$element[0].offsetWidth||$element[0].clientWidth || $element[0].parentNode.clientWidth,
                 x=[],
