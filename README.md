@@ -36,3 +36,5 @@ Where `ng-controller` is the name of the controller to use to source cahrt data.
 `y` (string) the source of data for the Y Axis on the specified `data` object array
 
 `margin` (number) chart margins
+
+`type` (string) the chart type (currently only supports bar/column)
