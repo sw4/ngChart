@@ -24,7 +24,7 @@ Include the `ngChart.js` and `ngChart.css` files, to use:
 <ng-chart ng-controller='yourController' data='data' x='category' y='y' margin="40"></ng-chart>  
 ```
 
-Where `ng-controller` is the name of the controller to use to source cahrt data.
+Where `ng-controller` is the name of the controller to use to source chart data.
 
 
 #####Attributes#####
@@ -38,3 +38,11 @@ Where `ng-controller` is the name of the controller to use to source cahrt data.
 `margin` (number) chart margins
 
 `type` (string) the chart type (currently only supports bar/column)
+
+###Todo###
+
+Support multiple data series
+
+Additional chart types: bar, line, pie, scatter, bubble
+
+Add legend, tooltips, hover values
