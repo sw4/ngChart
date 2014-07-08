@@ -1,0 +1,39 @@
+html,body{
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+}
+.ngChart{
+    height:100%;
+    width:100%;
+    position:relative;
+    font-family:arial;
+    font-size:12px;
+}
+.ngChart svg{
+    position:absolute;
+}
+.ngChart path, .ngChart line, .ngChart rect{
+    shape-rendering: crispEdges;
+}    
+.ngChart line{
+    stroke-width:1px;
+    stroke:black;
+}
+.ngChart .xAxis text{
+    text-anchor:middle;
+}
+
+.ngChart .yAxis text{
+    text-anchor:end;
+}
+.ngChart rect{
+    stroke:#c0c0c0;
+    fill:lightblue;
+    fill-opacity:.5;
+    transition:fill-opacity 200ms ease-in;
+}
+.ngChart rect:hover{
+    fill-opacity:1;
+}
