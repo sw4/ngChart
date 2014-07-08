@@ -46,3 +46,9 @@ Support multiple data series
 Additional chart types: bar, line, pie, scatter, bubble
 
 Add legend, tooltips, hover values
+
+Error supression (angular bug spawns errors on SVG attribute setting)
+
+Resizing (/animation)
+
+
