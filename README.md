@@ -24,7 +24,7 @@ Include the `ngChart.js` and `ngChart.css` files, to use:
 <ng-chart ng-controller='yourController' data='data' x='category' y='y' margin="40"></ng-chart>  
 ```
 
-Where `ng-controller` is the name of the controller to use to source chart data.
+Where `ng-controller` is the name of the controller to use to source chart data, a controller can be applied to the directive element directly, or to a parent.
 
 
 #####Attributes#####
