@@ -39,6 +39,8 @@ Where `ng-controller` is the name of the controller to use to source chart data,
 
 `type` (string) the chart type (currently only supports bar/column)
 
+`title` (string) the chart title
+
 ###Todo###
 
 Support multiple data series
