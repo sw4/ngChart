@@ -22,10 +22,12 @@ html,body{
     stroke-width:1px;
     stroke:black;
 }
-.ngChart .xAxis text{
+.ngChart .xAxis text, .ngChart text.title{
     text-anchor:middle;
 }
-
+.ngChart text.title{
+    font-size:1.5em;
+}
 .ngChart .yAxis text{
     text-anchor:end;
 }

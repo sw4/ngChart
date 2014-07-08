@@ -26,7 +26,8 @@ ngChart.directive("ngChart", [function () {
             y:'@',
             data:'@',
             margin:'@',
-            type:'@'
+            type:'@',
+            title:'@'
         }, 
         link:function(scope, element, attrs){          
             scope.type=attrs.type || scope.type ||  'column';
@@ -43,6 +44,8 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
         switch(type){
             case "column":
                 return "<svg height='{{svgHeight+margin.top+margin.bottom}}' width='{{svgWidth+margin.left+margin.right}}'>\
+                    <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
+                    <g>\
                     <rect ng-repeat='item in data' ng-x='{{item.svgX}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'></rect>\
                     </g>\
                     <g>\
@@ -83,7 +86,6 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
                 }; 
             }else{
                 margin=parseInt(margin);
-                console.log(margin);
                 $scope.margin={
                     top:margin,
                     right:margin,
@@ -120,7 +122,9 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
                 item.svgX=(maxWidth*index)+$scope.margin.left;
                 item.svgY=(svgHeight-item.svgHeight)+$scope.margin.top;
             });   
-                
+                $scope.$watch('data', function(newV){
+                    // console.log(newV);
+                })
             $scope.ticksY=[];  
             $scope.tickCount=20;
             $scope.tickOffset=svgHeight/$scope.tickCount;    
@@ -128,9 +132,10 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
             for(i=$scope.tickCount;i>=0;i--){
                 var v=minY+(tickStep*i);
                 $scope.ticksY.push({value:v.toFixed(2)});
-            }            
+            }                
         },        
         link:function(scope, element, attrs){  
+
             element.html(template(scope.type));        
             element.replaceWith($compile(element.html())(scope)); 
         }
