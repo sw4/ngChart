@@ -1,31 +1,17 @@
-pocketknife
+ngChart
 ==========
 
-Angular Dashboard UI Implementation
+Pure Angular SVG Charting
 
-Not production-ready.
+Not production-ready. This library is in its infancy.
 
 **Licensed under [cc by-sa 3.0](http://creativecommons.org/licenses/by-sa/3.0/) with attribution required**
 
 **Work in progress - very rough code**
 
 
-Requires better abstraction / MVC split, use of key angular.js tenets, code revision etc. 
+####ngChart####
 
-See examples folder for sample projects.
+The purpose of this project is to implement SVG based charting using native angular techniques and no reliance on external libraries (jQuery, d3 etc).
 
-Currently available components:
--------------
-
-###Container###
-Minimisable wrapper for components
-
-###Grid###
-Fully fledged grid component with pagination, multiple selection, sorting, column selection and filtering
-
-
-Under development:
--------------
-
-###Charting###
-Line, pie, bar, column, stacked bar, stacked column and area chart components
+Check the examples folder for current examples. 
