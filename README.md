@@ -16,6 +16,16 @@ The purpose of this project is to implement SVG based charting using native angu
 
 Check the examples folder for current examples. 
 
+###Key Development Tenets###
+
+Only use Angular or Vanilla Javascript
+
+Maintain seperation of concerns - all styling kept to CSS, content HTML, functionality JS
+
+Adhere to Angular design principles
+
+Adhere to JS best practice
+
 ###Usage###
 
 Include the `ngChart.js` and `ngChart.css` files, to use:
