@@ -35,7 +35,7 @@ html,body{
     stroke:#c0c0c0;
     fill:lightblue;
     fill-opacity:.5;
-    transition:fill-opacity 200ms ease-in;
+    transition:all 200ms ease-in;
 }
 .ngChart rect:hover{
     fill-opacity:1;
