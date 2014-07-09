@@ -9,18 +9,23 @@ html,body{
     width:100%;
     position:relative;
     font-family:arial;
-    font-size:12px;
+    font-size:10px;
     overflow:hidden;
+    stroke:#808080;
+    fill:#808080;
 }
 .ngChart svg{
     position:absolute;
+}
+.ngChart text{
+    stroke:none;
+    fill:#000;
 }
 .ngChart path, .ngChart line, .ngChart rect{
     shape-rendering: crispEdges;
 }    
 .ngChart line{
     stroke-width:1px;
-    stroke:black;
 }
 .ngChart .xAxis text, .ngChart text.title{
     text-anchor:middle;

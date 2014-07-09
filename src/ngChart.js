@@ -1,8 +1,5 @@
 var ngChart = angular.module('ngChart', []);
 
-ngChart.controller("ngChart", [ '$scope', '$timeout',
-function ( $scope, $timeout) {
-}]);
 
 angular.forEach(['transform','x1','x2','y1','y2','x', 'y', 'width', 'height'], function(name) {
   var ngName = 'ng' + name[0].toUpperCase() + name.slice(1);
@@ -122,7 +119,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
                 $scope.svgWidth=svgWidth;
             }
             render();
-            function dataChange(){            
+            function dataChange(){   
                 $scope.rawData.forEach(function(item){
                     x.push(item[$scope.x]);
                     y.push(item[$scope.y]);
@@ -149,12 +146,17 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
                 }    
             };
             $scope.$watch('rawData', function(n, o){     
-               dataChange();
+               o!== undefined && n!== undefined && dataChange();
             },true);
-
+            var resizeTimeout=null;
             function onResize(){
-                render(angular.element(document.getElementById($scope.chartId))[0]);
-                dataChange();
+                if(!resizeTimeout){
+                    resizeTimeout=setTimeout(function(){
+                        render(angular.element(document.getElementById($scope.chartId))[0]);
+                        dataChange();
+                        resizeTimeout=null;
+                    },200);
+                }
             }
             $scope.resize && ngChart.addResizeEvent(onResize);            
         },        
