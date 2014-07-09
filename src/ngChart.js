@@ -219,17 +219,22 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
             $scope.$watch('rawData', function(n, o){     
                o!== undefined && n!== undefined && dataChange();
             },true);
-            var resizeTimeout=null;
-            function onResize(){
-                if(!resizeTimeout){
-                    resizeTimeout=setTimeout(function(){
-                        render(angular.element(document.getElementById($scope.chartId))[0]);
+            
+            if($scope.resize){
+                $scope.chartWidth=0;
+                $scope.chartHeight=0;
+                setInterval(function(){
+                    ngChartEl=angular.element(document.getElementById($scope.chartId))[0];
+                    var newHeight=ngChartEl.offsetHeight|| ngChartEl.clientHeight || (ngChartEl.parentNode && ngChartEl.parentNode.clientHeight) || 0;
+                    var newWidth=ngChartEl.offsetWidth||ngChartEl.clientWidth || (ngChartEl.parentNode && ngChartEl.parentNode.clientWidth) || 0;
+                    if(newHeight != $scope.chartHeight || newWidth != $scope.chartWidth){                    
+                        $scope.chartWidth=newWidth;
+                        $scope.chartHeight=newHeight;
+                        render(ngChartEl);
                         dataChange();
-                        resizeTimeout=null;
-                    },200);
-                }
+                    }
+                },200);
             }
-            $scope.resize && ngChart.addResizeEvent(onResize);            
         },        
         link:function(scope, element, attrs){
             element.html(template(scope.type));        
