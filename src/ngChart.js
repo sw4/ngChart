@@ -138,7 +138,12 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
 
                 $scope.ticksY=[];  
                 $scope.tickCount=20;
-                $scope.tickOffset=svgHeight/$scope.tickCount;    
+                $scope.tickGap=20;
+                // how many ticks will fit?
+                $scope.tickCount=Math.round(svgHeight/$scope.tickGap);
+                // re-factor offset between ticks at that amount
+                $scope.tickOffset=svgHeight/$scope.tickCount;   
+                console.log($scope.tickOffset);
                 var tickStep=(maxY-minY) /$scope.tickCount;
                 for(i=$scope.tickCount;i>=0;i--){
                     var v=minY+(tickStep*i);
