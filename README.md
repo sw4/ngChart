@@ -26,6 +26,8 @@ Adhere to Angular design principles
 
 Adhere to JS best practice
 
+Charts should be declarative
+
 ###Usage###
 
 Include the `ngChart.js` and `ngChart.css` files, to use:
