@@ -1,4 +1,4 @@
-ngChart.controller("barData", ['$scope', '$interval',
+ngChart.controller("exampleData", ['$scope', '$interval',
 function ($scope,$interval) {
     $scope.data=[
     {category:5,y:8},
@@ -11,7 +11,7 @@ function ($scope,$interval) {
     ];
     
     $interval(function() {
-    //    $scope.data[0].y=Math.floor(Math.random() * (9 - 2 + 1)) + 2;
+     //   $scope.data[0].y=Math.floor(Math.random() * (9 - 2 + 1)) + 2;
     }, 500); 
     
 }]);

@@ -6,11 +6,12 @@
         <meta charset="utf-8">
         <link href="../css/ngChart.css" rel="stylesheet">
     </head>
-    <body data-ng-app="ngChart" ng-controller='barData'>
-        <ng-chart type='column' data='data' x='category' y='y' margin="40,40,40,60" title='Chart' resize='true'></ng-chart> 
+    <body data-ng-app="ngChart" ng-controller='exampleData'>
+        <ng-chart type='column' data='data' x='category' y='y' margin="60" title='Example Column Chart' resize='true'></ng-chart> 
+        <ng-chart type='bar' data='data' x='y' y='category' margin="40,40,40,60" title='Example Bar Chart' resize='true'></ng-chart> 
         <script src="../lib/angularjs-1.2.18/angular.min.js"></script>
         <script src="../src/ngChart.js"></script>
-        <script src="columnData.js"></script>
+        <script src="exampleData.js"></script>
     </body>
 </html>
 

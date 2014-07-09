@@ -21,18 +21,15 @@ ngChart.directive("ngChart", [function () {
         scope:{
             x:'@',
             y:'@',
-            data:'@',
             margin:'@',
             type:'@',
             title:'@',
-            resize:'@'
+            resize:'@',
+            data:'@'
         },
         controller:function($scope){
             $scope.chartId='ngChart_'+Math.floor(Math.random() * (9999 - 1 + 1)) + 1;
             $scope.rawData=$scope.$parent[$scope.data];
-            $scope.$watch('$scope.$parent.data', function(newV){
-                    // console.log(newV);
-            });
         }
     }
 }]);
@@ -51,26 +48,51 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
 
     function template(type){
         switch(type){
-            case "column":
+
+            case "bar":
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g>\
-                    <rect ng-repeat='item in rawData' ng-x='{{item.svgX}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'>\
+                    <rect ng-repeat='item in itemData' ng-x='{{offset.left}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'>\
                     </rect>\
                     </g>\
                     <g>\
                         <g class='axis yAxis' ng-transform='translate({{offset.left}},{{offset.top}})'>\
                             <line ng-y2='{{svgHeight}}'></line>\
-                            <g ng-transform='translate(-5,{{$index*tickOffset}})'  ng-repeat='tick in ticksY'>\
+                            <g ng-transform='translate(-5,{{item.svgY-offset.top+(item.svgHeight/2)}})' ng-repeat='item in itemData'>\
+                                <line ng-x2='5'></line>\
+                                <text ng-y='5'>{{rawData[$index][y]}}</text>\
+                            </g>\
+                        </g>\
+                        <g class='axis xAxis' ng-transform='translate({{offset.left}},{{svgHeight+offset.bottom}})'>\
+                            <line ng-x2='{{svgWidth}}'></line>\
+                            <g ng-transform='translate({{$index*tickOffsetY}},0)'  ng-repeat='tick in ticksX'>\
+                                <line ng-y2='5'></line>\
+                                <text ng-y='20'>{{tick.value}}</text>\
+                            </g>\
+                        </g>\
+                    </svg>"
+            break;        
+            case "column":
+                return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
+                    <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
+                    <g>\
+                    <rect ng-repeat='item in itemData' ng-x='{{item.svgX}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'>\
+                    </rect>\
+                    </g>\
+                    <g>\
+                        <g class='axis yAxis' ng-transform='translate({{offset.left}},{{offset.top}})'>\
+                            <line ng-y2='{{svgHeight}}'></line>\
+                            <g ng-transform='translate(-5,{{$index*tickOffsetY}})'  ng-repeat='tick in ticksY'>\
                                 <line ng-x2='5'></line>\
                                 <text ng-y='5'>{{tick.value}}</text>\
                             </g>\
                         </g>\
                         <g class='axis xAxis' ng-transform='translate({{offset.left}},{{svgHeight+offset.bottom}})'>\
                             <line ng-x2='{{svgWidth}}'></line>\
-                            <g ng-transform='translate({{item.svgX-offset.left+(item.svgWidth/2)}},0)' ng-repeat='item in rawData'>\
+                            <g ng-transform='translate({{item.svgX-offset.left+(item.svgWidth/2)}},0)' ng-repeat='item in itemData'>\
                                 <line ng-y2='5'></line>\
-                                <text ng-y='20'>{{item[x]}}</text>\
+                                <text ng-y='20'>{{rawData[$index][x]}}</text>\
                             </g>\
                         </g>\
                     </svg>"
@@ -82,8 +104,22 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
         replace: true,
         transclude: false,
         controller: function($scope, $element){
-        
-            var offset=null,svgHeight=0,svgWidth=0,x=[],y=[],maxWidth=0,maxHeight=0,maxX=0, minX=0, maxY=0, minY=0;
+         
+            var offset=null,
+                svgHeight=0,
+                svgWidth=0,
+                x=[],
+                y=[],
+                maxWidth=0,
+                maxHeight=0,
+                maxX=0, 
+                minX=0, 
+                maxY=0, 
+                minY=0,
+                tickCountX=0,
+                tickCountY=0,
+                tickStepY=0,
+                tickStepX=0;
 
             function render(element){
 
@@ -118,37 +154,68 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
                 $scope.svgHeight=svgHeight;
                 $scope.svgWidth=svgWidth;
             }
+            
             render();
-            function dataChange(){   
+            function dataChange(){
+                $scope.itemData=[];
                 $scope.rawData.forEach(function(item){
+                    $scope.itemData.push({});
                     x.push(item[$scope.x]);
                     y.push(item[$scope.y]);
                 });
-                maxHeight = maxY = Math.max.apply(null, y);   
-                $scope.maxWidth = maxWidth=svgWidth/$scope.rawData.length;  
+                
                 minY = Math.min.apply(null, y);      
+                maxY = Math.max.apply(null, y);     
                 maxX = Math.max.apply(null, x);      
-                minX = Math.min.apply(null, x);      
-                $scope.rawData.forEach(function(item, index){
-                    item.svgHeight=Math.round((item[$scope.y]/maxHeight)*svgHeight);
-                    item.svgWidth=maxWidth;
-                    item.svgX=(maxWidth*index)+$scope.offset.left;
-                    item.svgY=(svgHeight-item.svgHeight)+$scope.offset.top;
-                });   
+                minX = Math.min.apply(null, x);  
 
-                $scope.ticksY=[];  
-                $scope.tickCount=20;
-                $scope.tickGap=20;
+                switch($scope.type){
+                    case "column":
+                        maxHeight = maxY;   
+                        maxWidth=svgWidth/$scope.rawData.length;  
+                        $scope.rawData.forEach(function(item, index){                        
+                            $scope.itemData[index].svgHeight=Math.round((item[$scope.y]/maxHeight)*svgHeight);
+                            $scope.itemData[index].svgWidth=maxWidth;
+                            $scope.itemData[index].svgX=(maxWidth*index)+$scope.offset.left;
+                            $scope.itemData[index].svgY=(svgHeight-$scope.itemData[index].svgHeight)+$scope.offset.top;
+                        });
+                    break;                        
+                    case "bar":
+                        maxWidth = maxX;
+                        maxHeight=svgHeight/$scope.rawData.length;  
+                        $scope.rawData.forEach(function(item, index){ 
+                            $scope.itemData[index].svgWidth=Math.round((item[$scope.x]/maxWidth)*svgWidth);
+                            $scope.itemData[index].svgHeight=maxHeight;                            
+                            $scope.itemData[index].svgX=(svgWidth-$scope.itemData[index].svgWidth)+$scope.offset.left;
+                            $scope.itemData[index].svgY=(maxHeight*index)+$scope.offset.top;   
+                        });                        
+                    break;
+                }
+                    
+
+                $scope.tickGapY=20;
+                $scope.tickGapX=20;
+                $scope.ticksY=[];
+                $scope.ticksX=[];
                 // how many ticks will fit?
-                $scope.tickCount=Math.round(svgHeight/$scope.tickGap);
+                tickCountY=Math.round(svgHeight/$scope.tickGapY);
+                tickCountX=Math.round(svgWidth/$scope.tickGapX);
+                
                 // re-factor offset between ticks at that amount
-                $scope.tickOffset=svgHeight/$scope.tickCount;   
-                console.log($scope.tickOffset);
-                var tickStep=(maxY-minY) /$scope.tickCount;
-                for(i=$scope.tickCount;i>=0;i--){
-                    var v=minY+(tickStep*i);
+                $scope.tickOffsetY=svgHeight/tickCountY;   
+                $scope.tickOffsetX=svgWidth/tickCountX;  
+                
+                tickStepY=(maxY-minY) /tickCountY;
+                tickStepX=(maxX-minX) /tickCountX;               
+                
+                for(i=tickCountY;i>=0;i--){
+                    var v=minY+(tickStepY*i);
                     $scope.ticksY.push({value:v.toFixed(2)});
                 }    
+                for(i=0;i<=tickCountX;i++){
+                    var v=minX+(tickStepX*i);
+                    $scope.ticksX.push({value:v.toFixed(2)});
+                }                               
             };
             $scope.$watch('rawData', function(n, o){     
                o!== undefined && n!== undefined && dataChange();
