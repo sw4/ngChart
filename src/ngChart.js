@@ -48,7 +48,6 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
 
     function template(type){
         switch(type){
-
             case "bar":
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
@@ -66,13 +65,13 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
                         </g>\
                         <g class='axis xAxis' ng-transform='translate({{offset.left}},{{svgHeight+offset.bottom}})'>\
                             <line ng-x2='{{svgWidth}}'></line>\
-                            <g ng-transform='translate({{$index*tickOffsetY}},0)'  ng-repeat='tick in ticksX'>\
+                            <g ng-transform='translate({{$index*tickOffsetX}},0)'  ng-repeat='tick in ticksX'>\
                                 <line ng-y2='5'></line>\
                                 <text ng-y='20'>{{tick.value}}</text>\
                             </g>\
                         </g>\
                     </svg>"
-            break;        
+            break;
             case "column":
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
@@ -194,7 +193,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
                     
 
                 $scope.tickGapY=20;
-                $scope.tickGapX=20;
+                $scope.tickGapX=40;
                 $scope.ticksY=[];
                 $scope.ticksX=[];
                 // how many ticks will fit?
