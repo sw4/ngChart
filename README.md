@@ -53,18 +53,15 @@ Where `ng-controller` is the name of the controller to use to source chart data,
 
 `title` (string) the chart title
 
-`resize` (bool) whether to resize the chart if the parent container changes size (currently only on window.resize)
+`resize` (bool) whether to resize the chart if the parent container changes size
 
 ###Todo###
 
 Support multiple data series
 
-Additional chart types: bar, line, pie, scatter, bubble
+Additional chart types: line, pie, scatter, bubble
 
 Add legend, tooltips, hover values
 
-Error supression (angular bug spawns errors on SVG attribute setting)
-
-Resizing (animation)
-
+Animation
 
