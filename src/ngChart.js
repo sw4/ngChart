@@ -20,16 +20,18 @@ ngChart.directive("ngChart", [function () {
         restrict: "E",
         replace: true,
         transclude: false,
-        template:"<div class='ngChart'><svg ng-chart={{type}}></svg></div>",
+        template:"<div id='{{chartId}}' class='ngChart'><svg ng-chart={{type}}></svg></div>",
         scope:{
             x:'@',
             y:'@',
             data:'@',
             margin:'@',
             type:'@',
-            title:'@'
+            title:'@',
+            resize:'@'
         },
         controller:function($scope){
+            $scope.chartId='ngChart_'+Math.floor(Math.random() * (9999 - 1 + 1)) + 1;
             $scope.rawData=$scope.$parent[$scope.data];
             $scope.$watch('$scope.$parent.data', function(newV){
                     // console.log(newV);
@@ -38,12 +40,22 @@ ngChart.directive("ngChart", [function () {
     }
 }]);
 
+ngChart.addResizeEvent = function(func) {
+    var oldResize = window.onresize;
+    window.onresize = function () {
+        func();
+        if (typeof oldResize === 'function') {
+            oldResize();
+        }
+    };
+}
+
 ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( $compile, $http, $templateCache) {
 
     function template(type){
         switch(type){
             case "column":
-                return "<svg ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
+                return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g>\
                     <rect ng-repeat='item in rawData' ng-x='{{item.svgX}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'>\
@@ -73,40 +85,43 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
         replace: true,
         transclude: false,
         controller: function($scope, $element){
+        
+            var offset=null,svgHeight=0,svgWidth=0,x=[],y=[],maxWidth=0,maxHeight=0,maxX=0, minX=0, maxY=0, minY=0;
 
-            var offset=$scope.margin;
-            if(offset.split(',').length > 1){
-                offset=offset.split(',');
-                $scope.offset={
-                    top:parseInt(offset[0]),
-                    right:parseInt(offset[1]),
-                    bottom:parseInt(offset[2]),
-                    left:parseInt(offset[3])
-                }; 
-            }else{
-                offset=parseInt(offset);
-                $scope.offset={
-                    top:offset,
-                    right:offset,
-                    bottom:offset,
-                    left:offset
-                };   
-            }        
+            function render(element){
 
-            var svgHeight=$element[0].offsetHeight|| $element[0].clientHeight || $element[0].parentNode.clientHeight,
-                svgWidth=$element[0].offsetWidth||$element[0].clientWidth || $element[0].parentNode.clientWidth,
-                x=[],
-                y=[], 
-                maxWidth=0, 
-                maxHeight=0,
-                maxX, minX, maxY, minY;
-
-            svgHeight=svgHeight-$scope.offset.top-$scope.offset.bottom,
-            svgWidth=svgWidth-$scope.offset.left-$scope.offset.right,
-
-            $scope.svgHeight=svgHeight;
-            $scope.svgWidth=svgWidth;
+        
+            var ngChartEl=element || $element[0];
             
+                offset=$scope.margin;
+                if(offset.split(',').length > 1){
+                    offset=offset.split(',');
+                    $scope.offset={
+                        top:parseInt(offset[0]),
+                        right:parseInt(offset[1]),
+                        bottom:parseInt(offset[2]),
+                        left:parseInt(offset[3])
+                    }; 
+                }else{
+                    offset=parseInt(offset);
+                    $scope.offset={
+                        top:offset,
+                        right:offset,
+                        bottom:offset,
+                        left:offset
+                    };   
+                }        
+
+                svgHeight=ngChartEl.offsetHeight|| ngChartEl.clientHeight || (ngChartEl.parentNode && ngChartEl.parentNode.clientHeight) || 0;
+                svgWidth=ngChartEl.offsetWidth||ngChartEl.clientWidth || (ngChartEl.parentNode && ngChartEl.parentNode.clientWidth) || 0;
+
+                svgHeight=svgHeight-$scope.offset.top-$scope.offset.bottom,
+                svgWidth=svgWidth-$scope.offset.left-$scope.offset.right,
+
+                $scope.svgHeight=svgHeight;
+                $scope.svgWidth=svgWidth;
+            }
+            render();
             function dataChange(){            
                 $scope.rawData.forEach(function(item){
                     x.push(item[$scope.x]);
@@ -133,13 +148,19 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', function ( 
                     $scope.ticksY.push({value:v.toFixed(2)});
                 }    
             };
-            $scope.$watch('rawData', function(newV){                
-                dataChange();
+            $scope.$watch('rawData', function(n, o){     
+               dataChange();
             },true);
+
+            function onResize(){
+                render(angular.element(document.getElementById($scope.chartId))[0]);
+                dataChange();
+            }
+            $scope.resize && ngChart.addResizeEvent(onResize);            
         },        
         link:function(scope, element, attrs){
             element.html(template(scope.type));        
-            element.replaceWith($compile(element.html())(scope)); 
+            element.replaceWith($compile(element.html())(scope));
         }
     }
 }]);
