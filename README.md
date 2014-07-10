@@ -39,15 +39,51 @@ Include the `ngChart.js` and `ngChart.css` files, to use:
 Where `ng-controller` is the name of the controller to use to source chart data, a controller can be applied to the directive (`<ng-chart />`) element itself, or to its parent.
 
 
-#####Attributes#####
+#####$scope.ngChart#####
 
-`data` (string) the source of data in `$scope`
+The parent scope for any ngChart must have an ngChart property of the following format:
 
-`x` (string) the source of data for the X Axis on the specified `data` object array
+```javascript
 
-`y` (string) the source of data for the Y Axis on the specified `data` object array
 
-`margin` (number/csv) chart margins either single integer or comma seperated values (top,right,bottom,left)
+    $scope.ngChart={
+        type:"bar",// (string) (optional if set on directive element) - chart type (bar/column)
+        title:'chart',// (string) (optional if set on directive element) - chart title
+        data: [//(object array) (required)
+            {category:"cat",y:8},
+            {category:"pig",y:2},
+            {category:"cow",y:9},
+            {category:"bird",y:5},
+            {category:"dog",y:2},
+            {category:"emu",y:6},
+            {category:"hamster",y:2}
+        ],
+        margin: 60,// (number/object) (optional if set on directive element) - chart margins, can be number or object (top, right, bottom, left)
+        resize:false,// (bool) (optional if set on directive element) - chart automatically resize on parent element resize
+        legend: true,// (bool) (optional if set on directive element) - show chart legend
+        xAxis: {// (object) (optional if xValues set on directive element) - source of x axis values in 'data'
+            values: "y"
+        },
+        yAxis: {// (object) (optional if yValues set on directive element) - source of y axis values in 'data'
+            values: "category"
+        },
+        series: [{// (object array) - source of series axis values in 'data'
+            values: "y"
+        }]
+    };
+    
+    
+```
+
+#####Directive Element Attributes#####
+
+The below attributes can be set on the directive element to override the equivalent controller settings to allow a single ngChart controller to be shared by different charts.
+
+`xValues` (string) the source of data for the X Axis (key name)
+
+`yValues` (string) the source of data for the Y Axis (key name)
+
+`margin` (number/csv) chart margins, either number or comma seperated values (top,right,bottom,left)
 
 `type` (string) the chart type (currently only supports bar/column)
 
