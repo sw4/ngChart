@@ -34,7 +34,7 @@ Charts should be declarative
 
 Include the `ngChart.js` and `ngChart.css` files, to use:
 
-```
+```html
 <ng-chart ng-controller='yourController' type='column' xValues='category' yValues='y' resize='true'></ng-chart>
 ```
 
