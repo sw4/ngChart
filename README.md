@@ -52,13 +52,13 @@ The parent scope for any ngChart must have an ngChart property of the following 
         type:"bar",// (string) (optional if set on directive element) - chart type (bar/column)
         title:'chart',// (string) (optional if set on directive element) - chart title
         data: [//(object array) (required)
-            {category:"cat",y:8},
-            {category:"pig",y:2},
-            {category:"cow",y:9},
-            {category:"bird",y:5},
-            {category:"dog",y:2},
-            {category:"emu",y:6},
-            {category:"hamster",y:2}
+            {category:"cat",y:8, y2:2},
+            {category:"pig",y:2, y2:6},
+            {category:"cow",y:9, y2:9},
+            {category:"bird",y:5, y2:2},
+            {category:"dog",y:2, y2:7},
+            {category:"emu",y:6, y2:3},
+            {category:"hamster",y:2, y2:3}
         ],
         margin: 60,// (number/object) (optional if set on directive element) - chart margins, can be number or object (top, right, bottom, left)
         resize:false,// (bool) (optional if set on directive element) - chart automatically resize on parent element resize
@@ -71,6 +71,8 @@ The parent scope for any ngChart must have an ngChart property of the following 
         },
         series: [{// (object array) - source of series axis values in 'data'
             values: "y"
+        },{
+            values: "y2"
         }]
     };
     
@@ -93,9 +95,24 @@ The below attributes can be set on the directive element to override the equival
 
 `resize` (bool) whether to resize the chart if the parent container changes size
 
-###Todo###
 
-Support multiple data series
+#####Styling#####
+
+To maintain correct seperation of concerns no styling is applied in either the ngChart html or javascript. All styling can be controlled using CSS.
+
+For example, each bar/column element is given four classes (where [val] is autopopulated from the dataset)
+
+`s_[val]` // the series index of the current element
+
+`c_[val]` // the category value for the current element
+
+`v_[val]` // the quantifiable value of the current element
+
+`i_[val]` // the index of the current element
+
+The above classes allow you to add styles for any combination of series, category, value and index.
+
+###Todo###
 
 Additional chart types: line, pie, scatter, bubble
 
