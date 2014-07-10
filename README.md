@@ -16,9 +16,7 @@ The purpose of this project is to implement SVG based charting using native angu
 
 Check the examples folder for current examples. 
 
-###Example###
-
-[Live Demo](https://rawgit.com/sw4/ngChart/master/examples/example.html)
+###[Live Demo](https://rawgit.com/sw4/ngChart/master/examples/example.html)###
 
 ###Key Development Tenets###
 
