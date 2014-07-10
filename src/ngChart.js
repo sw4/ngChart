@@ -50,13 +50,13 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g>\
-                    <rect class='v-{{item.css}} i-{{$index}}' ng-repeat='item in itemData' ng-x='{{offset.left}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'>\
+                    <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{offset.left}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'>\
                     </rect>\
                     </g>\
                     <g>\
                         <g class='axis yAxis' ng-transform='translate({{offset.left}},{{offset.top}})'>\
                             <line ng-y2='{{svgHeight}}'></line>\
-                            <g ng-transform='translate(-5,{{item.svgY-offset.top+(item.svgHeight/2)}})' ng-repeat='item in itemData'>\
+                            <g ng-transform='translate(-5,{{(svgHeight/data.length)*$index + (svgHeight/data.length/2)}})' ng-repeat='item in data'>\
                                 <line ng-x2='5'></line>\
                                 <text ng-y='2' ng-x='-3'>{{data[$index][yAxis.values]}}</text>\
                             </g>\
@@ -74,7 +74,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g>\
-                    <rect class='v-{{item.css}} i-{{$index}}' ng-repeat='item in itemData' ng-x='{{item.svgX}}'  ng-y='{{item.svgY}}' ng-height='{{item.svgHeight}}px' ng-width='{{item.svgWidth}}px'>\
+                    <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{item.x}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'>\
                     </rect>\
                     </g>\
                     <g>\
@@ -87,7 +87,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                         </g>\
                         <g class='axis xAxis' ng-transform='translate({{offset.left}},{{svgHeight+offset.bottom}})'>\
                             <line ng-x2='{{svgWidth}}'></line>\
-                            <g ng-transform='translate({{item.svgX-offset.left+(item.svgWidth/2)}},0)' ng-repeat='item in itemData'>\
+                            <g ng-transform='translate({{(svgWidth/data.length)*$index + (svgWidth/data.length/2)}},0)' ng-repeat='item in data'>\
                                 <line ng-y2='5'></line>\
                                 <text ng-y='17'>{{data[$index][xAxis.values]}}</text>\
                             </g>\
@@ -171,7 +171,6 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
 
                 $scope.itemData=[];
                 $scope.data.forEach(function(item){
-                    $scope.itemData.push({});
                     x.push(item[$scope.xAxis.values]);
                     y.push(item[$scope.yAxis.values]);
                 });
@@ -183,29 +182,38 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 minX = Math.min.apply(null, x);  
 
                 switch($scope.type){
-                    case "column":
-                    
+                    case "column":                    
                         maxHeight = maxY;   
-                        maxWidth=svgWidth/$scope.data.length;  
-                        $scope.data.forEach(function(item, index){                        
-                            $scope.itemData[index].svgHeight=Math.round((item[$scope.yAxis.values]/maxHeight)*svgHeight);
-                            $scope.itemData[index].svgWidth=maxWidth;
-                            $scope.itemData[index].svgX=(maxWidth*index)+$scope.offset.left;
-                            $scope.itemData[index].svgY=(svgHeight-$scope.itemData[index].svgHeight)+$scope.offset.top;
-                            $scope.itemData[index].css=item[$scope.xAxis.values].toString().replace(/\W/g, '');
+                        maxWidth=svgWidth/$scope.data.length/$scope.series.length;
+                        $scope.data.forEach(function(item, index){
+                            $scope.series.forEach(function(serie, series){         
+                                var height=Math.round((item[serie.values]/maxHeight)*svgHeight);                 
+                                $scope.itemData.push({
+                                    height:height,
+                                    width:maxWidth,
+                                    x:(maxWidth*index)*$scope.series.length + (series*maxWidth)+$scope.offset.left,// 
+                                    y:(svgHeight-height)+$scope.offset.top,
+                                    css:'s_'+series+' c_'+item[$scope.xAxis.values]+' v_'+item[$scope.yAxis.values]
+                                });
+                            }); 
                         });
                     break;                        
-                    case "bar":
+                    case "bar":                    
                         maxWidth = maxX;
-                        maxHeight=svgHeight/$scope.data.length;  
-                        $scope.data.forEach(function(item, index){      
-                            $scope.itemData[index].svgWidth=Math.round((item[$scope.xAxis.values]/maxWidth)*svgWidth);
-                            $scope.itemData[index].svgHeight=maxHeight;                            
-                            $scope.itemData[index].svgX=(svgWidth-$scope.itemData[index].svgWidth)+$scope.offset.left;
-                            $scope.itemData[index].svgY=(maxHeight*index)+$scope.offset.top;                               
-                            $scope.itemData[index].css=item[$scope.yAxis.values].toString().replace(/\W/g, '');
-                            
-                        });                         
+                        maxHeight=svgHeight/$scope.data.length/$scope.series.length;  
+                        $scope.data.forEach(function(item, index){   
+
+                            $scope.series.forEach(function(serie, series){         
+                                var width=Math.round((item[serie.values]/maxWidth)*svgWidth);                 
+                                $scope.itemData.push({
+                                    height:maxHeight,
+                                    width:width,
+                                    x:(svgWidth-width)+$scope.offset.left,                                   
+                                    y:(maxHeight*index)*$scope.series.length + (series*maxHeight)+$scope.offset.left,
+                                    css:'s_'+series+' c_'+item[$scope.xAxis.values]+' v_'+item[$scope.yAxis.values]
+                                });
+                            });                            
+                        });                       
                     break;
                 }
 

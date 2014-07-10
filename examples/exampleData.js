@@ -5,13 +5,13 @@ function ($scope,$interval) {
         type:"bar",
         title:'chart',
         data: [
-            {category:"cat",y:8},
-            {category:"pig",y:2},
-            {category:"cow",y:9},
-            {category:"bird",y:5},
-            {category:"dog",y:2},
-            {category:"emu",y:6},
-            {category:"hamster",y:2}
+            {category:"cat",y:8, y2:2},
+            {category:"pig",y:2, y2:6},
+            {category:"cow",y:9, y2:9},
+            {category:"bird",y:5, y2:2},
+            {category:"dog",y:2, y2:7},
+            {category:"emu",y:6, y2:3},
+            {category:"hamster",y:2, y2:3}
         ],
         margin: 60,
         resize:true,
@@ -24,6 +24,8 @@ function ($scope,$interval) {
         },
         series: [{
             values: "y"
+        },{
+            values: "y2"
         }]
     };
     
