@@ -3,7 +3,7 @@ function ($scope,$interval) {
 
     $scope.ngChart={
         type:"bar",
-        title:'chart',
+        title:'Example Bar Chart (settings in controller)',
         data: [
             {category:"cat",y:8, y2:2},
             {category:"pig",y:2, y2:6},

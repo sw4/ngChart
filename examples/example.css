@@ -1,3 +1,15 @@
 .ngChart rect.s_0{
     fill:lightgreen;
 }
+/*
+.ngChart .c_bird.s_0, .ngChart .c_bird.s_1, .ngChart .c_bird text{
+    fill:red;
+}
+.ngChart .c_bird, .ngChart .c_bird line{
+    stroke:red;
+}
+.ngChart .c_bird .bracket{
+    stroke:red; 
+    stroke-width:2;
+}
+*/
