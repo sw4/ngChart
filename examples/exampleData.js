@@ -1,14 +1,32 @@
 ngChart.controller("exampleData", ['$scope', '$interval',
 function ($scope,$interval) {
-    $scope.data=[
-    {category:5,y:8},
-    {category:8,y:2},
-    {category:1,y:9},
-    {category:4,y:5},
-    {category:6,y:2},
-    {category:7,y:6},
-    {category:1,y:2}
-    ];
+
+
+    $scope.ngChart={
+        type:"bar",
+        title:'chart',
+        data: [
+            {category:"cat",y:8},
+            {category:"pig",y:2},
+            {category:"cow",y:9},
+            {category:"bird",y:5},
+            {category:"dog",y:2},
+            {category:"emu",y:6},
+            {category:"hamster",y:2}
+        ],
+        margin: 60,
+        resize:false,
+        legend: true,
+        xAxis: {
+            values: "y"
+        },
+        yAxis: {
+            values: "category"
+        },
+        series: [{
+            values: "y"
+        }]
+    };
     
     $interval(function() {
      //   $scope.data[0].y=Math.floor(Math.random() * (9 - 2 + 1)) + 2;
