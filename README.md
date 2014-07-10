@@ -60,6 +60,9 @@ The parent scope for any ngChart must have an ngChart property of the following 
             {category:"emu",y:6, y2:3},
             {category:"hamster",y:2, y2:3}
         ],
+        tick:{ // (object) (optional) tick configuration
+            interval:9 // how many ticks to place on value axis, if not specified- calculated automatically given available space
+        },
         margin: 60,// (number/object) (optional if set on directive element) - chart margins, can be number or object (top, right, bottom, left)
         resize:false,// (bool) (optional if set on directive element) - chart automatically resize on parent element resize
         legend: true,// (bool) (optional if set on directive element) - show chart legend
