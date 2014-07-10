@@ -125,6 +125,4 @@ Animation
 
 Minus offsets, min max axis axis values configurable
 
-Axis basing/scaling
-
 
