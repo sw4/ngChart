@@ -107,6 +107,9 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
             $scope.type=($scope.attr_type || $scope.$parent.ngChart.type).toString();            
             $scope.title=($scope.attr_title || $scope.$parent.ngChart.title).toString();
             $scope.resize=$scope.attr_resize || $scope.$parent.ngChart.resize;
+            if(typeof $scope.resize=='string'){
+                $scope.resize = ($scope.resize === 'true');
+            }
             // create new property...or link to parent
             $scope.xAxis={
                 values:($scope.attr_xValues || $scope.$parent.ngChart.xAxis.values).toString()

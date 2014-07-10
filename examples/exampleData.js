@@ -1,7 +1,6 @@
 ngChart.controller("exampleData", ['$scope', '$interval',
 function ($scope,$interval) {
 
-
     $scope.ngChart={
         type:"bar",
         title:'chart',
@@ -15,7 +14,7 @@ function ($scope,$interval) {
             {category:"hamster",y:2}
         ],
         margin: 60,
-        resize:false,
+        resize:true,
         legend: true,
         xAxis: {
             values: "y"
