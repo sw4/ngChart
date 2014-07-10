@@ -210,7 +210,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                                     width:width,
                                     x:(svgWidth-width)+$scope.offset.left,                                   
                                     y:(maxHeight*index)*$scope.series.length + (series*maxHeight)+$scope.offset.left,
-                                    css:'s_'+series+' c_'+item[$scope.xAxis.values]+' v_'+item[$scope.yAxis.values]
+                                    css:'s_'+series+' c_'+item[$scope.yAxis.values]+' v_'+item[$scope.xAxis.values]
                                 });
                             });                            
                         });                       
