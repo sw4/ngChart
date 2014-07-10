@@ -18,7 +18,7 @@ Check the examples folder for current examples.
 
 ###Example###
 
-Please see examples folder
+(Live Demo)[https://rawgit.com/sw4/ngChart/master/examples/example.html]
 
 ###Key Development Tenets###
 
