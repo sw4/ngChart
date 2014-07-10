@@ -16,6 +16,10 @@ The purpose of this project is to implement SVG based charting using native angu
 
 Check the examples folder for current examples. 
 
+###Example###
+
+Please see examples folder
+
 ###Key Development Tenets###
 
 Only use Angular or Vanilla Javascript
