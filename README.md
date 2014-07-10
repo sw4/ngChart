@@ -102,13 +102,13 @@ To maintain correct seperation of concerns no styling is applied in either the n
 
 For example, each bar/column element is given four classes (where [val] is autopopulated from the dataset)
 
-`s_[val]` // the series index of the current element
+`s_[val]`  the series index of the current element
 
-`c_[val]` // the category value for the current element
+`c_[val]`  the category value for the current element
 
-`v_[val]` // the quantifiable value of the current element
+`v_[val]`  the quantifiable value of the current element
 
-`i_[val]` // the index of the current element
+`i_[val]`  the index of the current element
 
 The above classes allow you to add styles for any combination of series, category, value and index.
 
