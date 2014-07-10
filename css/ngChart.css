@@ -45,3 +45,6 @@ html,body{
 .ngChart rect:hover{
     fill-opacity:1;
 }
+.ngChart .grid{
+    stroke:#f5f5f5;
+}

@@ -49,10 +49,13 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
             case "bar":
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
-                    <g>\
+                    <g class='grid' ng-transform='translate({{offset.left}},{{svgHeight+offset.bottom}})'>\
+                        <line  ng-transform='translate({{$index*tickOffsetX}},0)'  ng-repeat='tick in ticksX' class='grid' ng-y1='-6' ng-y2='-{{svgHeight-1}}'></line>\
+                    </g>\
+                    <g class='items'>\
                     <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{offset.left}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'></rect>\
                     </g>\
-                    <g>\
+                    <g class='axes'>\
                         <g class='axis yAxis' ng-transform='translate({{offset.left}},{{offset.top}})'>\
                             <line ng-y2='{{svgHeight}}'></line>\
                             <g class='tick c_{{data[$index][xAxis.values]}} i_{{$index}}' ng-transform='translate(-5,{{(svgHeight/data.length)*$index + (svgHeight/data.length/2)}})' ng-repeat='item in data'>\
@@ -68,15 +71,19 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                                 <text ng-y='17'>{{tick.value}}</text>\
                             </g>\
                         </g>\
-                    </svg>"
+                    </g>\
+                </svg>"
             break;
             case "column":
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
-                    <g>\
-                    <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{item.x}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'></rect>\
+                    <g class='grid' ng-transform='translate({{offset.left}},{{offset.top}})'>\
+                        <line ng-transform='translate(-5,{{$index*tickOffsetY}})'  ng-repeat='tick in ticksY' class='grid' ng-x1='6' ng-x2='{{svgWidth-1}}'></line>\
                     </g>\
-                    <g>\
+                    <g class='items'>\
+                        <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{item.x}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'></rect>\
+                    </g>\
+                    <g class='axes'>\
                         <g class='axis yAxis' ng-transform='translate({{offset.left}},{{offset.top}})'>\
                             <line ng-y2='{{svgHeight}}'></line>\
                             <g class='tick' ng-transform='translate(-5,{{$index*tickOffsetY}})'  ng-repeat='tick in ticksY'>\
@@ -92,7 +99,8 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                                 <text ng-y='17'>{{data[$index][xAxis.values]}}</text>\
                             </g>\
                         </g>\
-                    </svg>"
+                    </g>\
+                </svg>"
             break;
         }
     };
