@@ -50,20 +50,19 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g>\
-                    <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{offset.left}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'>\
-                    </rect>\
+                    <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{offset.left}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'></rect>\
                     </g>\
                     <g>\
                         <g class='axis yAxis' ng-transform='translate({{offset.left}},{{offset.top}})'>\
                             <line ng-y2='{{svgHeight}}'></line>\
-                            <g ng-transform='translate(-5,{{(svgHeight/data.length)*$index + (svgHeight/data.length/2)}})' ng-repeat='item in data'>\
+                            <g class='tick' ng-transform='translate(-5,{{(svgHeight/data.length)*$index + (svgHeight/data.length/2)}})' ng-repeat='item in data'>\
                                 <line ng-x2='5'></line>\
                                 <text ng-y='2' ng-x='-3'>{{data[$index][yAxis.values]}}</text>\
                             </g>\
                         </g>\
                         <g class='axis xAxis' ng-transform='translate({{offset.left}},{{svgHeight+offset.bottom}})'>\
                             <line ng-x2='{{svgWidth}}'></line>\
-                            <g ng-transform='translate({{$index*tickOffsetX}},0)'  ng-repeat='tick in ticksX'>\
+                            <g class='tick' ng-transform='translate({{$index*tickOffsetX}},0)'  ng-repeat='tick in ticksX'>\
                                 <line ng-y2='5'></line>\
                                 <text ng-y='17'>{{tick.value}}</text>\
                             </g>\
@@ -74,20 +73,19 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g>\
-                    <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{item.x}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'>\
-                    </rect>\
+                    <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{item.x}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'></rect>\
                     </g>\
                     <g>\
                         <g class='axis yAxis' ng-transform='translate({{offset.left}},{{offset.top}})'>\
                             <line ng-y2='{{svgHeight}}'></line>\
-                            <g ng-transform='translate(-5,{{$index*tickOffsetY}})'  ng-repeat='tick in ticksY'>\
+                            <g class='tick' ng-transform='translate(-5,{{$index*tickOffsetY}})'  ng-repeat='tick in ticksY'>\
                                 <line ng-x2='5'></line>\
                                 <text ng-y='5' ng-x='-3'>{{tick.value}}</text>\
                             </g>\
                         </g>\
                         <g class='axis xAxis' ng-transform='translate({{offset.left}},{{svgHeight+offset.bottom}})'>\
                             <line ng-x2='{{svgWidth}}'></line>\
-                            <g ng-transform='translate({{(svgWidth/data.length)*$index + (svgWidth/data.length/2)}},0)' ng-repeat='item in data'>\
+                            <g class='tick' ng-transform='translate({{(svgWidth/data.length)*$index + (svgWidth/data.length/2)}},0)' ng-repeat='item in data'>\
                                 <line ng-y2='5'></line>\
                                 <text ng-y='17'>{{data[$index][xAxis.values]}}</text>\
                             </g>\
@@ -268,7 +266,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                         };
                         resizing=false;                  
                     }
-                },500);
+                },200);
             }
             
         },      

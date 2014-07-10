@@ -30,7 +30,7 @@ function ($scope,$interval) {
     };
     
     $interval(function() {
-     //   $scope.data[0].y=Math.floor(Math.random() * (9 - 2 + 1)) + 2;
+    //    $scope.ngChart.data[0].y=Math.floor(Math.random() * (9 - 2 + 1)) + 2;
     }, 500); 
     
 }]);
