@@ -35,7 +35,7 @@ Charts should be declarative
 Include the `ngChart.js` and `ngChart.css` files, to use:
 
 ```
-<ng-chart ng-controller='yourController' data='data' x='category' y='y' margin="40"></ng-chart>  
+<ng-chart ng-controller='yourController' type='column' xValues='category' yValues='y' resize='true'></ng-chart>
 ```
 
 Where `ng-controller` is the name of the controller to use to source chart data, a controller can be applied to the directive (`<ng-chart />`) element itself, or to its parent.
