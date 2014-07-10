@@ -6,7 +6,7 @@ function ($scope,$interval) {
         title:'Example Bar Chart (settings in controller)',
         data: [
             {category:"cat",y:8, y2:2},
-            {category:"pig",y:2, y2:6},
+            {category:"pig",y:1, y2:6},
             {category:"cow",y:9, y2:9},
             {category:"bird",y:5, y2:2},
             {category:"dog",y:2, y2:7},

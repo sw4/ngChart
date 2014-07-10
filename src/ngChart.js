@@ -176,18 +176,20 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 });
                 
                         
-                minY = Math.min.apply(null, y);      
-                maxY = Math.max.apply(null, y);     
+                minY = Math.min.apply(null, y); 
+                minY=minY > 0 ? 0 : minY;                
+                maxY = Math.max.apply(null, y);   
+                rangeY=maxY-minY;                
                 maxX = Math.max.apply(null, x);      
-                minX = Math.min.apply(null, x);  
-
+                minX = Math.min.apply(null, x);                
+                minX=minX > 0 ? 0 : minX;        
+                rangeX=maxX-minX;                
                 switch($scope.type){
-                    case "column":                    
-                        maxHeight = maxY;   
+                    case "column":          
                         maxWidth=svgWidth/$scope.data.length/$scope.series.length;
                         $scope.data.forEach(function(item, index){
                             $scope.series.forEach(function(serie, series){         
-                                var height=Math.round((item[serie.values]/maxHeight)*svgHeight);                 
+                                var height=Math.round((item[serie.values]/rangeY)*svgHeight);                 
                                 $scope.itemData.push({
                                     height:height,
                                     width:maxWidth,
@@ -198,13 +200,11 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                             }); 
                         });
                     break;                        
-                    case "bar":                    
-                        maxWidth = maxX;
+                    case "bar":             
                         maxHeight=svgHeight/$scope.data.length/$scope.series.length;  
-                        $scope.data.forEach(function(item, index){   
-
+                        $scope.data.forEach(function(item, index){
                             $scope.series.forEach(function(serie, series){         
-                                var width=Math.round((item[serie.values]/maxWidth)*svgWidth);                 
+                                var width=Math.round((item[serie.values]/rangeX)*svgWidth);                 
                                 $scope.itemData.push({
                                     height:maxHeight,
                                     width:width,
