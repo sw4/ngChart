@@ -1,6 +1,5 @@
 var ngChart = angular.module('ngChart', []);
 
-
 angular.forEach(['transform','x1','x2','y1','y2','x', 'y', 'width', 'height'], function(name) {
   var ngName = 'ng' + name[0].toUpperCase() + name.slice(1);
   ngChart.directive(ngName, function() {
@@ -124,9 +123,12 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
             };   
             $scope.yAxis={
                 values:($scope.attr_yValues || $scope.$parent.ngChart.yAxis.values).toString()
-            };   
+            };    
+            $scope.tick={
+                interval:$scope.attr_tickInterval || $scope.$parent.ngChart.tick.interval
+            };    
             $scope.series=$scope.$parent.ngChart.series;
-        
+            
             var offset=null,
                 svgHeight=0,
                 svgWidth=0,
@@ -224,14 +226,22 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                         });                       
                     break;
                 }
-
+                
                 $scope.tickGapY=20;
                 $scope.tickGapX=40;
                 $scope.ticksY=[];
                 $scope.ticksX=[];
                 // how many ticks will fit?
-                tickCountY=Math.round(svgHeight/$scope.tickGapY);
-                tickCountX=Math.round(svgWidth/$scope.tickGapX);
+                
+                if(!$scope.tick.interval || isNaN($scope.tick.interval)){
+                    tickCountY=Math.round(svgHeight/$scope.tickGapY);
+                    tickCountX=Math.round(svgWidth/$scope.tickGapX);
+                }else{
+                    tickCountY=$scope.tick.interval;
+                    tickCountX=$scope.tick.interval;
+                };
+                
+                
                 
                 // re-factor offset between ticks at that amount
                 $scope.tickOffsetY=svgHeight/tickCountY;   
@@ -242,11 +252,11 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 
                 for(i=tickCountY;i>=0;i--){
                     var v=minY+(tickStepY*i);
-                    $scope.ticksY.push({value:v.toFixed(2)});
+                    $scope.ticksY.push({value:v});
                 }    
                 for(i=0;i<=tickCountX;i++){
                     var v=minX+(tickStepX*i);
-                    $scope.ticksX.push({value:v.toFixed(2)});
+                    $scope.ticksX.push({value:v});
                 }                               
             };
             

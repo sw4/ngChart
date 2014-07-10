@@ -16,6 +16,9 @@ function ($scope,$interval) {
         margin: 60,
         resize:true,
         legend: true,
+        tick:{
+            interval:9
+        },
         xAxis: {
             values: "y"
         },
