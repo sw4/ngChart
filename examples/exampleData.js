@@ -50,7 +50,7 @@ function ($scope,$interval) {
         resize:true,
         legend: true,
         tick:{
-            interval:9
+            interval:18
         },
         xAxis: {
             values: "y"
