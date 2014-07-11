@@ -48,7 +48,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
         switch(type){
             case "bar":
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
-                    <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
+                    <text class='title' ng-x='{{offset.left + svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g class='grid' ng-transform='translate({{offset.left}},{{svgHeight+offset.bottom}})'>\
                         <line  ng-transform='translate({{$index*tickOffsetX}},0)'  ng-repeat='tick in ticksX' class='grid' ng-y1='-6' ng-y2='-{{svgHeight-1}}'></line>\
                     </g>\
@@ -76,7 +76,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
             break;
             case "column":
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
-                    <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
+                    <text class='title' ng-x='{{offset.left + svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g class='grid' ng-transform='translate({{offset.left}},{{offset.top}})'>\
                         <line ng-transform='translate(-5,{{$index*tickOffsetY}})'  ng-repeat='tick in ticksY' class='v_{{tick.value}} i_{{$index}}' ng-x1='6' ng-x2='{{svgWidth-1}}'></line>\
                     </g>\
