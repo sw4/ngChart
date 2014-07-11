@@ -14,7 +14,7 @@ Not production-ready. This library is in its infancy.
 
 The purpose of this project is to implement SVG based charting using native angular techniques and no reliance on external libraries (jQuery, d3 etc).
 
-Check the examples folder for current examples. 
+[Check the examples folder for current examples](https://github.com/sw4/ngChart/tree/master/examples). 
 
 ###[Live Demo](https://rawgit.com/sw4/ngChart/master/examples/example.html)###
 
