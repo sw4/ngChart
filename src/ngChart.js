@@ -27,6 +27,7 @@ ngChart.directive("ngChart", [function () {
         },
         controller:function($scope){
             $scope.chartId='ngChart_'+Math.floor(Math.random() * (9999 - 1 + 1)) + 1;
+            console.log($scope);
         }
     }
 }]);
@@ -77,7 +78,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 return "<svg  ng-height='{{svgHeight+offset.top+offset.bottom}}' ng-width='{{svgWidth+offset.left+offset.right}}'>\
                     <text class='title' ng-x='{{svgWidth/2}}' ng-y='25'>{{title}}</text>\
                     <g class='grid' ng-transform='translate({{offset.left}},{{offset.top}})'>\
-                        <line ng-transform='translate(-5,{{$index*tickOffsetY}})'  ng-repeat='tick in ticksY' class='grid' ng-x1='6' ng-x2='{{svgWidth-1}}'></line>\
+                        <line ng-transform='translate(-5,{{$index*tickOffsetY}})'  ng-repeat='tick in ticksY' class='v_{{tick.value}} i_{{$index}}' ng-x1='6' ng-x2='{{svgWidth-1}}'></line>\
                     </g>\
                     <g class='items'>\
                         <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{item.x}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'></rect>\
@@ -248,7 +249,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                                     width:maxWidth,
                                     x:(maxWidth*index)*$scope.series.length + (series*maxWidth)+$scope.offset.left,// 
                                     y:item[serie.values]<0 ? $scope.offset.top+baseY : $scope.offset.top+baseY-height,
-                                    css:'s_'+series+' c_'+item[$scope.xAxis.values]+' v_'+item[$scope.yAxis.values]
+                                    css:'s_'+series+' c_'+item[$scope.xAxis.values]+' v_'+item[serie.values] + (item[serie.values] < 0 ? ' negative': ' positive')
                                 });
                             }); 
                         });
@@ -263,7 +264,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                                     width:width,
                                     x:item[serie.values]<0 ? $scope.offset.left+(svgWidth*(item[serie.values]+offsetX)/bandX) : $scope.offset.left+baseX,
                                     y:(maxHeight*index)*$scope.series.length + (series*maxHeight)+$scope.offset.left,
-                                    css:'s_'+series+' c_'+item[$scope.yAxis.values]+' v_'+item[$scope.xAxis.values]
+                                    css:'s_'+series+' c_'+item[$scope.yAxis.values]+' v_'+item[serie.values] + (item[serie.values] < 0 ? ' negative': ' positive')
                                 });
                             });                            
                         });                       

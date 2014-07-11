@@ -1,15 +1,33 @@
 .ngChart rect.s_0{
     fill:lightgreen;
 }
-/*
-.ngChart .c_bird.s_0, .ngChart .c_bird.s_1, .ngChart .c_bird text{
+body > div {
+    height:300%;
+}
+body > div > .ngChart{
+    height:33%;
+}
+body > div:first-of-type > .ngChart:last-of-type .tick.c_pig line{
+    stroke:red;
+    stroke-width:2px;
+}
+body > div:first-of-type > .ngChart:last-of-type .tick.c_pig text{
+    fill: red;
+    font-size:1.2em;
+    font-weight:bold;
+}
+body > div:first-of-type > .ngChart:last-of-type rect.v_6{
+    fill:blue;
+}
+body > div:first-of-type > .ngChart:last-of-type rect.c_hamster{
+    fill:pink;
+}
+body > div:first-of-type > .ngChart:last-of-type .grid line.v_6{
+    stroke:pink;
+}
+body > div:nth-of-type(2) > .ngChart:last-of-type rect.negative.s_0{
+    fill:pink;
+}
+body > div:nth-of-type(2) > .ngChart:last-of-type rect.negative.s_1{
     fill:red;
 }
-.ngChart .c_bird, .ngChart .c_bird line{
-    stroke:red;
-}
-.ngChart .c_bird .bracket{
-    stroke:red; 
-    stroke-width:2;
-}
-*/
