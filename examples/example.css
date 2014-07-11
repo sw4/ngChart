@@ -1,11 +1,15 @@
 .ngChart rect.s_0{
     fill:lightgreen;
 }
+.ngChart text.title{
+    font-size:12px;
+}
 body > div {
-    height:300%;
+    height:50%;
 }
 body > div > .ngChart{
-    height:33%;
+    width:33%;
+    float:left;
 }
 body > div:first-of-type > .ngChart:last-of-type .tick.c_pig line{
     stroke:red;

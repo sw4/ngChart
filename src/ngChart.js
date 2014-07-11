@@ -234,8 +234,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                     bandY=offsetY;
                     offsetY=0;
                     baseY=svgHeight;
-                }
-                
+                }                
                 rangeX=bandX;
                 rangeY=bandY;       
                 switch($scope.type){
