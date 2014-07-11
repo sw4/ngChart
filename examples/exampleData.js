@@ -2,7 +2,7 @@ ngChart.controller("exampleDataSetA", ['$scope', '$interval',
 function ($scope,$interval) {
     $scope.ngChart={
         type:"bar",
-        title:'Example Bar Chart (settings in controller)',
+        title:'Example Bar Chart (config in controller)',
         data: [
             {category:"cat",y:8, y2:2},
             {category:"pig",y:1, y2:6},
@@ -12,7 +12,7 @@ function ($scope,$interval) {
             {category:"emu",y:6, y2:3},
             {category:"hamster",y:2, y2:3}
         ],
-        margin: 60,
+        margin: 35,
         resize:true,
         legend: true,
         tick:{
@@ -36,7 +36,7 @@ ngChart.controller("exampleDataSetB", ['$scope', '$interval',
 function ($scope,$interval) {
     $scope.ngChart={
         type:"bar",
-        title:'Example Bar Chart (settings in controller)',
+        title:'Example Bar Chart (config in controller)',
         data: [
             {category:"cat",y:8, y2:2},
             {category:"pig",y:-1, y2:6},
@@ -46,7 +46,7 @@ function ($scope,$interval) {
             {category:"emu",y:6, y2:-3},
             {category:"hamster",y:2, y2:3}
         ],
-        margin: 60,
+        margin: 35,
         resize:true,
         legend: true,
         tick:{
