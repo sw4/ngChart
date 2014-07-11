@@ -52,7 +52,7 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                         <line  ng-transform='translate({{$index*tickOffsetX}},0)'  ng-repeat='tick in ticksX' class='grid' ng-y1='-6' ng-y2='-{{svgHeight-1}}'></line>\
                     </g>\
                     <g class='items'>\
-                    <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{offset.left}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'></rect>\
+                    <rect class='{{item.css}} i_{{$index}}' ng-repeat='item in itemData' ng-x='{{item.x}}'  ng-y='{{item.y}}' ng-height='{{item.height}}px' ng-width='{{item.width}}px'></rect>\
                     </g>\
                     <g class='axes'>\
                         <g class='axis yAxis' ng-transform='translate({{offset.left}},{{offset.top}})'>\
@@ -143,7 +143,13 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 tickCountX=0,
                 tickCountY=0,
                 tickStepY=0,
-                tickStepX=0;
+                tickStepX=0,
+                offsetX=0,
+                bandX=0,
+                baseX=0,
+                offsetY=0,
+                bandY=0,
+                baseY=0;
 
             function render(element){        
                 var ngChartEl=element || $element[0];
@@ -186,39 +192,76 @@ ngChart.directive("ngChart", ['$compile', '$http', '$templateCache', '$interval'
                 });
                 
                         
-                minY = Math.min.apply(null, y); 
-                minY=minY > 0 ? 0 : minY;                
-                maxY = Math.max.apply(null, y);   
-                rangeY=maxY-minY;                
+                minY = Math.min.apply(null, y);               
+                maxY = Math.max.apply(null, y); 
+                minY=minY > 0 ? 0 : minY;    
+                         
                 maxX = Math.max.apply(null, x);      
                 minX = Math.min.apply(null, x);                
-                minX=minX > 0 ? 0 : minX;        
-                rangeX=maxX-minX;                
+                minX=minX > 0 ? 0 : minX; 
+                
+                // get max value offset from zero
+                if(Math.abs(minX)>Math.abs(maxX)){
+                    offsetX=Math.abs(minX);                    
+                }else{
+                    offsetX=Math.abs(maxX);
+                }
+                // get actual scale size
+                if(minX<0 && maxX >0){
+                    bandX=offsetX*2;       
+                    baseX=svgWidth*.5;
+                    minX=offsetX*-1;
+                    maxX=offsetX;
+                }else{
+                    bandX=offsetX;
+                    offsetX=0;
+                    baseX=0;
+                }
+                // get max value offset from zero
+                if(Math.abs(minY)>Math.abs(maxY)){
+                    offsetY=Math.abs(minY);                    
+                }else{
+                    offsetY=Math.abs(maxY);
+                }
+                // get actual scale size
+                if(minY<0 && maxY >0){
+                    bandY=offsetY*2;       
+                    baseY=svgHeight*.5;
+                    minY=offsetY*-1;
+                    maxY=offsetY;
+                }else{
+                    bandY=offsetY;
+                    offsetY=0;
+                    baseY=svgHeight;
+                }
+                
+                rangeX=bandX;
+                rangeY=bandY;       
                 switch($scope.type){
                     case "column":          
                         maxWidth=svgWidth/$scope.data.length/$scope.series.length;
                         $scope.data.forEach(function(item, index){
                             $scope.series.forEach(function(serie, series){         
-                                var height=Math.round((item[serie.values]/rangeY)*svgHeight);                 
+                                var height=Math.abs(Math.round((item[serie.values]/rangeY)*svgHeight));                                 
                                 $scope.itemData.push({
                                     height:height,
                                     width:maxWidth,
                                     x:(maxWidth*index)*$scope.series.length + (series*maxWidth)+$scope.offset.left,// 
-                                    y:(svgHeight-height)+$scope.offset.top,
+                                    y:item[serie.values]<0 ? $scope.offset.top+baseY : $scope.offset.top+baseY-height,
                                     css:'s_'+series+' c_'+item[$scope.xAxis.values]+' v_'+item[$scope.yAxis.values]
                                 });
                             }); 
                         });
                     break;                        
                     case "bar":             
-                        maxHeight=svgHeight/$scope.data.length/$scope.series.length;  
+                        maxHeight=svgHeight/$scope.data.length/$scope.series.length;
                         $scope.data.forEach(function(item, index){
-                            $scope.series.forEach(function(serie, series){         
-                                var width=Math.round((item[serie.values]/rangeX)*svgWidth);                 
+                            $scope.series.forEach(function(serie, series){
+                                var width=Math.round((Math.abs(item[serie.values])/rangeX)*svgWidth);  
                                 $scope.itemData.push({
                                     height:maxHeight,
                                     width:width,
-                                    x:(svgWidth-width)+$scope.offset.left,                                   
+                                    x:item[serie.values]<0 ? $scope.offset.left+(svgWidth*(item[serie.values]+offsetX)/bandX) : $scope.offset.left+baseX,
                                     y:(maxHeight*index)*$scope.series.length + (series*maxHeight)+$scope.offset.left,
                                     css:'s_'+series+' c_'+item[$scope.yAxis.values]+' v_'+item[$scope.xAxis.values]
                                 });
